@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>User page</title>
+</head>
+<body>
+<h1>
+    <span th:text="'Logged in: '+${name}"></span>
+</h1>
+<h2>
+    <span th:text="'Available accounts:'"></span>
+</h2>
+
+<table th:object="${accounts}" id="userTable" border="1">
+    <tr th:each="account :${accounts}">
+        <td  th:text="${account.getNumber()}"></td>
+        <td  th:text="${account.getBalance()}"></td>
+        <td  th:text="${account.getCurrency()}"></td>
+    </tr>
+</table>
+
+
+<form th:href="@{/transactionHistory}" method="post">
+    <input type="submit" value="Transaction history"/>
+</form>
+
+<form th:action="@{/doTransaction}" method="post">
+    <input type="submit" value="Do transaction"/>
+</form>
+
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+</body>
+</html>

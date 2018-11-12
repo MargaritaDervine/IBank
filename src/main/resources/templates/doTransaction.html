@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Transaction window</title>
+</head>
+<body>
+
+
+
+<form th:href="@{/transactionHistory}" method="post">
+    <input type="submit" value="Transaction history"/>
+</form>
+
+<form th:action="@{/userPage}" method="post">
+    <input type="submit" value="Back to user page"/>
+</form>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="Sign Out"/>
+</form>
+
+</body>
+</html>
