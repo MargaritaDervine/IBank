@@ -1,7 +1,6 @@
 package bank.domain;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name="users")
@@ -28,11 +27,6 @@ public class User {
     @Column(name="active", nullable = false )
     private boolean active;
 
-    /*@ElementCollection(targetClass = Role.class)
-    @CollectionTable (name = "user_roles", joinColumns = @JoinColumn(name ="user_id"))
-    @Enumerated(EnumType.STRING)
-    private Set <Role> roles;
-*/
     public Long getId() {
         return id;
     }
@@ -72,10 +66,6 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-   /* public void setRoles(Set<Role> roles) {
-
-        this.roles = roles;
-    */
    public void setActive(boolean active) {
        this.active = active;
    }
@@ -85,9 +75,5 @@ public class User {
     }
 }
 
-  /*  public Set<Role> getRoles() {
-
-        return roles;
-    }*/
 
 

@@ -6,16 +6,16 @@
 </head>
 <body>
 <h1>
-    <span th:text="transactions:"></span>
+    <span th:text="'transactions:'"></span>
 </h1>
 
 <table th:object="${transactions}" id="transactionTable" border="1">
     <tr th:each="transaction :${transactions}">
-        <td  th:text="${transactions.getId()}"></td>
-        <td  th:text="${transactions.getFromAccount()}"></td>
-        <td  th:text="${transactions.getToAccount()}"></td>
-        <td  th:text="${transactions.getDateTime()}"></td>
-        <td  th:text="${transactions.getAmount()}"></td>
+        <td  th:text="${transaction.getId()}"></td>
+        <td  th:text="${transaction.getFromAccount().getNumber()}"></td>
+        <td  th:text="${transaction.getToAccount().getNumber()}"></td>
+        <td  th:text="${transaction.getDateTime()}"></td>
+        <td  th:text="${transaction.getAmount()}"></td>
     </tr>
 </table>
 
@@ -25,14 +25,10 @@
 </form>
 
 
-<form th:action="@{/doTransaction}" method="post">
-    <input type="submit" value="Do transaction"/>
+<form action="#" data-th-action="@{/transactionHistory}" data-th-object="${model}" method="post">
+    <button type="submit" name="action" value="doTransaction">do transaction</button>
+    <button type="submit" name="action" value="userPage">userPage</button>
 </form>
-
-<form th:action="@{/userPage}" method="post">
-    <input type="submit" value="Back to user page"/>
-</form>
-
 
 </body>
 </html>

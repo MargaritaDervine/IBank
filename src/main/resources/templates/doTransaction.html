@@ -5,18 +5,28 @@
     <title>Transaction window</title>
 </head>
 <body>
+<h1>
+    <span th:text="${name}"></span>
+</h1>
+<h2>
+    <span th:text="'Transaction window:'"></span>
+</h2>
 
-
-
-<form th:href="@{/transactionHistory}" method="post">
-    <input type="submit" value="Transaction history"/>
+<form th:action="@{/doTransaction}" method="post">
+    <div><label> From account: <input type="text" name="fromAccount"/> </label></div>
+    <div><label> Receiver account: <input type="text" name="toAccount"/> </label></div>
+    <div><label> Amount: <input type="text" name="amount"/> </label></div>
+    <div><input type="submit" name="action" value="Submit"/></div>
 </form>
 
-<form th:action="@{/userPage}" method="post">
-    <input type="submit" value="Back to user page"/>
-</form>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
+<h3> <span th:text = "${transactionID}"></span></h3>
+
+<!-- <form th:action="@{/userpage}" method="post">-->
+<!-- <input type="submit" value="Back to user page"/>-->
+<!--</form> -->
+<form action="#" data-th-action="@{/doTransaction}" data-th-object="${model}" method="post">
+    <button type="submit" name="action" value="transactionHistory">TrHist</button>
+    <button type="submit" name="action" value="userPage">userPage</button>
 </form>
 
 </body>

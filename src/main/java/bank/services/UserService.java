@@ -15,9 +15,6 @@ public class UserService {
     public User getUser(String username){
         return repository.findByUsername(username);
     }
-    public User getUser(String username, String password){
-        return repository.findByUsernameAndPassword(username,password);
-    }
     public User getUser(Long id){
         return repository.getOne(id);
     }

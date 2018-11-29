@@ -21,16 +21,14 @@
 </table>
 
 
-<form th:href="@{/transactionHistory}" method="post">
-    <input type="submit" value="Transaction history"/>
-</form>
-
-<form th:action="@{/doTransaction}" method="post">
-    <input type="submit" value="Do transaction"/>
-</form>
-
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Sign Out"/>
 </form>
+
+<form action="#" data-th-action="@{/userpage}" data-th-object="${model}" method="post">
+    <button type="submit" name="action" value="doTransaction">doTr</button>
+    <button type="submit" name="action" value="transactionHistory">trHist</button>
+</form>
+
 </body>
 </html>

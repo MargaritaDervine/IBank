@@ -53,7 +53,11 @@ public class TransactionService {
         return transaction;
     }
 
-    public List<Transaction> getTransactionsByAccount(String acc) {
+  /* public List<Transaction> getTransactionsByAccount(String acc) {
+        return transactionRepository.findByAccount(acc);
+    }*/
+
+    public List<Transaction> getTransactionsByAccount(Account acc) {
         return transactionRepository.findByAccount(acc);
     }
 

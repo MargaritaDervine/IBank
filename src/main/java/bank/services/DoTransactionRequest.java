@@ -12,11 +12,12 @@ public class DoTransactionRequest {
     }
     public Long getUserId(){return userId;}
 
-    public DoTransactionRequest(String accFrom, String accTo, double amt, String username) {
+    public DoTransactionRequest(String accFrom, String accTo, double amt, Long userId) {
         this.accFrom = accFrom;
         this.accTo = accTo;
         this.amt = amt;
-        this.username = username;
+        //this.username = username;
+        this.userId = userId;
     }
 
     public String getAccFrom() {

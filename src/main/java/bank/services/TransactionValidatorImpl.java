@@ -1,6 +1,5 @@
 package bank.services;
 
-import bank.database.AccountRepository;
 import bank.domain.Account;
 import bank.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
