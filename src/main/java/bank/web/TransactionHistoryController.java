@@ -33,6 +33,7 @@ public class TransactionHistoryController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUser(auth.getName());
         Account acct = accountService.getAvailabeAccounts(user).get(0);
+        model.addAttribute("name", user.getFirstName() + " " + user.getLastname());
         List <Transaction> transactions = transactionService.getTransactionsByAccount(acct);
         model.addAttribute("transactions", transactions);
         return "transactionHistory";

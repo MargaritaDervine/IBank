@@ -34,6 +34,11 @@ public class TransactionValidatorImpl implements TransactionValidator {
             AppError appError = new AppError(accFrom.getNumber(), " has not enough money");
             errors.add(appError);
         }
+
+        if (amount < 0.01) {
+            AppError appError = new AppError(accFrom.getNumber(), "Amount cannot be negative or zero");
+            errors.add(appError);
+        }
     }
 
     @Override
@@ -53,7 +58,11 @@ public class TransactionValidatorImpl implements TransactionValidator {
             if (!userAccounts.contains(accFrom)) {
                 errors.add(new AppError("Account", " does not belong to user"));
             }
+            if (accFrom.equals(accTo)) {
+                errors.add(new AppError("", "Not possible to transfer money within one account"));
+            }
         }
+
     }
 
     private void validateUser(User user, List<AppError> validationErrors) {
