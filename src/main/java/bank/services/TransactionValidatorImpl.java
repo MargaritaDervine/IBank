@@ -12,13 +12,11 @@ import java.util.List;
 public class TransactionValidatorImpl implements TransactionValidator {
     @Autowired
     AccountServiceImpl accountService;
-    @Autowired
-    UserService userService;
 
     @Override
-    public List<AppError> validateTransaction(Account accFrom, Account accTo, double amount, Long userId) {
-        List<AppError> errors = new ArrayList<>();
-        User user = userService.getUser(userId);
+    public List<String> validateTransaction(Account accFrom, Account accTo, String amount, User user) {
+        List<String> errors = new ArrayList<>();
+
         validateUser(user, errors);
 
         if (errors.isEmpty()) {
@@ -29,45 +27,48 @@ public class TransactionValidatorImpl implements TransactionValidator {
     }
 
     @Override
-    public void validateAmount(Account accFrom, double amount, List<AppError> errors) {
-        if (accFrom != null && accFrom.getBalance() < amount) {
-            AppError appError = new AppError(accFrom.getNumber(), " has not enough money");
-            errors.add(appError);
+    public void validateAmount(Account accFrom, String amount, List<String> errors) {
+        double amountDouble = 0.0d;
+        try {
+            amountDouble  = Double.parseDouble(amount);
+        } catch (NumberFormatException e){
+            errors.add(amount+ " is not a number");
         }
 
-        if (amount < 0.01) {
-            AppError appError = new AppError(accFrom.getNumber(), "Amount cannot be negative or zero");
-            errors.add(appError);
+
+        if (accFrom != null && accFrom.getBalance() < amountDouble) {
+            errors.add(accFrom.getNumber() + " has not enough money");
+        }
+
+        if (amountDouble < 0.01) {
+            errors.add("Amount cannot be negative or zero");
         }
     }
 
     @Override
-    public void validateAccounts(Account accFrom, Account accTo, List<AppError> errors, User user) {
-
+    public void validateAccounts(Account accFrom, Account accTo, List<String> errors, User user) {
         if (accFrom == null) {
-            AppError appError = new AppError("", "Account does not exist");
-            errors.add(appError);
+            errors.add(accFrom + " account does not exist");
         }
         if (accTo == null) {
-            AppError appError = new AppError("", "Account does not exist");
-            errors.add(appError);
+            errors.add(accTo + " account does not exist");
         }
 
         if (accFrom != null) {
             List<Account> userAccounts = accountService.getAvailabeAccounts(user);
             if (!userAccounts.contains(accFrom)) {
-                errors.add(new AppError("Account", " does not belong to user"));
+                errors.add("Account does not belong to user");
             }
             if (accFrom.equals(accTo)) {
-                errors.add(new AppError("", "Not possible to transfer money within one account"));
+                errors.add("Not possible to transfer money within same account");
             }
         }
 
     }
 
-    private void validateUser(User user, List<AppError> validationErrors) {
+    private void validateUser(User user, List<String> validationErrors) {
         if (user == null) {
-            validationErrors.add(new AppError("username", "Not found"));
+            validationErrors.add("username not found");
         }
     }
 

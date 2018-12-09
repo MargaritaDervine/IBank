@@ -6,9 +6,9 @@ import bank.domain.User;
 import java.util.List;
 
 public interface TransactionValidator {
-    List<AppError> validateTransaction(Account accFrom, Account accTo, double amount,Long userId);
+    List<String> validateTransaction(Account accFrom, Account accTo, String amount,User user);
 
-    void validateAmount(Account accFrom, double amount, List<AppError> errors);
+    void validateAmount(Account accFrom, String amount, List<String> errors);
 
-    void validateAccounts(Account accFrom, Account accTo, List<AppError> errors, User user);
+    void validateAccounts(Account accFrom, Account accTo, List<String> errors, User user);
 }

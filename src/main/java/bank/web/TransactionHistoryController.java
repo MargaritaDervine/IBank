@@ -38,18 +38,4 @@ public class TransactionHistoryController {
         model.addAttribute("transactions", transactions);
         return "transactionHistory";
     }
-
-    @RequestMapping(value="/transactionHistory", method=RequestMethod.POST)
-    public String locateFromTransactionWindow(@RequestParam(value="action", required=true) String action) {
-
-        if (action.equals("doTransaction")) {
-            return "redirect:doTransaction";
-        }
-
-        if (action.equals("userPage")) {
-            return "redirect:userpage";
-        }
-        return "transactionHistory";
-    }
-
 }

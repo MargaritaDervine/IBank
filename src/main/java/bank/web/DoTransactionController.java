@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -40,20 +41,25 @@ public class DoTransactionController {
                                 @RequestParam(value = "amount", required = false) String amount,
                                 Model model) {
 
-        if (action.equals("transactionHistory")) {
-            return "redirect:transactionHistory";
+
+        if (action.equals("again")) {
+            return "redirect:doTransaction";
         }
-        if (action.equals("userPage")) {
-            return "redirect:userpage";
-        }
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUser(auth.getName());
-        double amountDouble = Double.parseDouble(amount);
-        DoTransactionResponse response = transactionService.doTransaction(new DoTransactionRequest(fromAcc, toAcc, amountDouble, user.getId()));
+        List errors;
+        if (toAcc.isEmpty() || amount.isEmpty()) {
+            errors = Arrays.asList("all fields must be filled");
+            model.addAttribute("errors", errors);
+            return "doTransaction";
+        }
+
+        DoTransactionResponse response = transactionService.doTransaction(new DoTransactionRequest(fromAcc, toAcc, amount, user.getId()));
         if (response.isSuccess()) {
             model.addAttribute("success", true);
         } else {
-            List errors = response.getErrors();
+            errors = response.getErrors();
             model.addAttribute("errors", errors);
         }
         return "doTransaction";

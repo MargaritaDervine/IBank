@@ -31,18 +31,4 @@ public class UserPageController {
         model.addAttribute("name", user.getFirstName() + " " + user.getLastname());
         return "userPage";
     }
-
-    @RequestMapping(value = "/userpage", method = RequestMethod.POST)
-    public String locateFromUserPage(@RequestParam(value = "action", required = true) String action) {
-
-        if (action.equals("doTransaction")) {
-            return "redirect:doTransaction";
-        }
-
-        if (action.equals("transactionHistory")) {
-            return "redirect:transactionHistory";
-        }
-        return "userpage";
-    }
-
 }

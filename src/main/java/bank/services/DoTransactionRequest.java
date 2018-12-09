@@ -3,7 +3,7 @@ package bank.services;
 public class DoTransactionRequest {
     private String accFrom;
     private String accTo;
-    private double amt;
+    private String amt;
     String username;
     Long userId;
 
@@ -12,7 +12,7 @@ public class DoTransactionRequest {
     }
     public Long getUserId(){return userId;}
 
-    public DoTransactionRequest(String accFrom, String accTo, double amt, Long userId) {
+    public DoTransactionRequest(String accFrom, String accTo, String amt, Long userId) {
         this.accFrom = accFrom;
         this.accTo = accTo;
         this.amt = amt;
@@ -28,7 +28,7 @@ public class DoTransactionRequest {
         return accTo;
     }
 
-    public double getAmt() {
+    public String getAmt() {
         return amt;
     }
 }
