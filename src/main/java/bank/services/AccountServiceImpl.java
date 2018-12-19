@@ -21,16 +21,16 @@ public class AccountServiceImpl {
         return repository.findByNumber(accN);
     }
 
+    public void setRepository(AccountRepository repository) {
+        this.repository = repository;
+    }
+
     @Transactional
     public void changeBalance(double amt, String accountNumber) {
         Account account = getAccount(accountNumber);
         double newBalance = account.getBalance() + amt;
         account.setBalance(newBalance);
-        Account newAcc = save(account);
-    }
-
-    Account save(Account account) {
-        return repository.save(account);
+        repository.save(account);
     }
 
     public List<Account> getAvailabeAccounts(User user) {

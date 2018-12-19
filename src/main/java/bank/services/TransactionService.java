@@ -25,30 +25,37 @@ public class TransactionService {
     @Autowired
     private UserService userService;
 
+    public void setAccountService(AccountServiceImpl accountService) {
+        this.accountService = accountService;
+    }
 
     @Transactional
     public DoTransactionResponse doTransaction(DoTransactionRequest request) {
-        String accFrom = request.getAccFrom();
-        String accTo = request.getAccTo();
-        String amount = request.getAmt();
-        Account fromAcc = getAccount(accFrom);
-        Account toAcc = getAccount(accTo);
+        String fromAccString = request.getAccFrom();
+        String toAccString = request.getAccTo();
+        String amountString = request.getAmt();
+        Account fromAcc = getAccount(fromAccString);
+        Account toAcc = getAccount(toAccString);
         User user = getUser(request);
 
-        List<AppError> validationErrors = getValidationErrors(amount, fromAcc, toAcc, user);
+        List<AppError> validationErrors = getValidationErrors(amountString, fromAcc, toAcc, user);
         if (!validationErrors.isEmpty()) {
             return new DoTransactionResponse(validationErrors);
         }
 
-        amount = amount.replace(",", ".");
-        double doubleAmt = Double.parseDouble(amount);
+        double doubleAmt = getDoubleAmt(amountString);
         Transaction transaction = createTransaction(doubleAmt, fromAcc, toAcc);
 
-        changeBalance(accFrom, -doubleAmt);
-        changeBalance(accTo, doubleAmt);
+        changeBalance(fromAccString, -doubleAmt);
+        changeBalance(toAccString, doubleAmt);
 
         transactionRepository.save(transaction);
         return new DoTransactionResponse(transaction.getId());
+    }
+
+    double getDoubleAmt(String amount) {
+        amount = amount.replace(",", ".");
+        return Double.parseDouble(amount);
     }
 
     private void changeBalance(String accFrom, double v) {
@@ -60,7 +67,7 @@ public class TransactionService {
                 amount, user);
     }
 
-    private User getUser(DoTransactionRequest request) {
+    User getUser(DoTransactionRequest request) {
         return userService.getUser(request.getUserId());
     }
 
@@ -86,5 +93,8 @@ public class TransactionService {
         return transactionRepository.findByAccount(acc);
     }
 
+    public void setTransactionRepository(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 }
 

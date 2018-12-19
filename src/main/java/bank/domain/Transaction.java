@@ -84,8 +84,7 @@ public class Transaction {
                 Objects.equals(id, that.id) &&
                 Objects.equals(fromAccount, that.fromAccount) &&
                 Objects.equals(toAccount, that.toAccount);
-                //&&
-                //Objects.equals(dateTime, that.dateTime);
+                //&& Objects.equals(dateTime, that.dateTime);
     }
 
     @Override
