@@ -42,12 +42,12 @@
             <span style="color: #F00;" th:text="${amountError}"></span>
         </div>
         <div class="container">
-        <div th:if="${amountError!=null or toAccError!=null}">
-            <form th:action="@{/doTransaction}" method="post">
-                <button type="submit" name="action" value="again" class="btn btn-secondary">Try again</button>
-            </form>
-            <br>
-        </div>
+            <div th:if="${amountError!=null or toAccError!=null}">
+                <form th:action="@{/doTransaction}" method="post">
+                    <button type="submit" name="action" value="again" class="btn btn-secondary">Try again</button>
+                </form>
+                <br>
+            </div>
         </div>
         <div th:if="${success}">
             <span style="font-weight: bold" th:text="'Transaction successfully saved'"></span>
@@ -57,11 +57,12 @@
                 </form>
             </div>
             <div class="container">
-            <div th:if="${errors!=null}">
-                <form th:action="@{/doTransaction}" method="post">
-                    <button type="submit" name="action" value="again" class="btn btn-secondary">New Transaction</button>
-                </form>
-            </div>
+                <div th:if="${errors!=null}">
+                    <form th:action="@{/doTransaction}" method="post">
+                        <button type="submit" name="action" value="again" class="btn btn-secondary">New Transaction
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="container mt-3">
