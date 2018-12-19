@@ -31,33 +31,54 @@ public class TransactionService {
         String accFrom = request.getAccFrom();
         String accTo = request.getAccTo();
         String amount = request.getAmt();
-        Account fromAcc = accountService.getAccount(accFrom);
-        Account toAcc = accountService.getAccount(accTo);
-        User user = userService.getUser(request.getUserId());
+        Account fromAcc = getAccount(accFrom);
+        Account toAcc = getAccount(accTo);
+        User user = getUser(request);
 
-
-        List<AppError> validationErrors = transactionValidator.validateTransaction(fromAcc, toAcc,
-                amount, user);
+        List<AppError> validationErrors = getValidationErrors(amount, fromAcc, toAcc, user);
         if (!validationErrors.isEmpty()) {
             return new DoTransactionResponse(validationErrors);
         }
+
+        amount = amount.replace(",", ".");
         double doubleAmt = Double.parseDouble(amount);
         Transaction transaction = createTransaction(doubleAmt, fromAcc, toAcc);
 
-        accountService.changeBalance(-doubleAmt, accFrom);
-        accountService.changeBalance(doubleAmt, accTo);
+        changeBalance(accFrom, -doubleAmt);
+        changeBalance(accTo, doubleAmt);
 
         transactionRepository.save(transaction);
         return new DoTransactionResponse(transaction.getId());
     }
 
-    private Transaction createTransaction(double amount, Account fromAcc, Account toAcc) {
+    private void changeBalance(String accFrom, double v) {
+        accountService.changeBalance(v, accFrom);
+    }
+
+    List<AppError> getValidationErrors(String amount, Account fromAcc, Account toAcc, User user) {
+        return transactionValidator.validateTransaction(fromAcc, toAcc,
+                amount, user);
+    }
+
+    private User getUser(DoTransactionRequest request) {
+        return userService.getUser(request.getUserId());
+    }
+
+    Account getAccount(String accFrom) {
+        return accountService.getAccount(accFrom);
+    }
+
+    Transaction createTransaction(double amount, Account fromAcc, Account toAcc) {
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
-        transaction.setDateTime(LocalDateTime.now());
+        transaction.setDateTime(getTime());
         transaction.setFromAccount(fromAcc);
         transaction.setToAccount(toAcc);
         return transaction;
+    }
+
+    LocalDateTime getTime() {
+        return LocalDateTime.now();
     }
 
 

@@ -3,6 +3,7 @@ package bank.domain;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "transactions")
@@ -74,4 +75,21 @@ public class Transaction {
         return id;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transaction that = (Transaction) o;
+        return Double.compare(that.amount, amount) == 0 &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(fromAccount, that.fromAccount) &&
+                Objects.equals(toAccount, that.toAccount);
+                //&&
+                //Objects.equals(dateTime, that.dateTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fromAccount, toAccount, dateTime, amount);
+    }
 }
