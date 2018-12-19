@@ -1,6 +1,5 @@
 package bank.domain;
 
-
 import javax.persistence.*;
 
 @Entity

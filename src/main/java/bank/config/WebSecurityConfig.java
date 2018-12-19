@@ -7,13 +7,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
     DataSource dataSource;
 
@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll()
-        .and().httpBasic();
+                .and().httpBasic();
         http.csrf().disable();
     }
 
@@ -40,8 +40,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(NoOpPasswordEncoder.getInstance())
                 .usersByUsernameQuery("select username, password, active from users where username = ?")
                 .authoritiesByUsernameQuery("select username, 'ROLE_USER' from users where username=?");
-              /*  .authoritiesByUsernameQuery("select u.username, ur.roles from users u " +
-                        "inner join user_role ur on u.id = ur.user_id where u.username = ?");*/
     }
 
 }

@@ -5,10 +5,10 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="transactions")
+@Table(name = "transactions")
 public class Transaction {
     @Id
-    @Column(name="transaction_id")
+    @Column(name = "transaction_id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
@@ -20,10 +20,10 @@ public class Transaction {
     @JoinColumn(name = "to_account_number", nullable = false)
     Account toAccount;
 
-    @Column(name="dateTime", nullable = false)
+    @Column(name = "dateTime", nullable = false)
     LocalDateTime dateTime;
 
-    @Column(name="amount", nullable = false)
+    @Column(name = "amount", nullable = false)
     double amount;
 
     public void setId(Long id) {
@@ -41,6 +41,7 @@ public class Transaction {
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
+
     public void setDateTime(Timestamp timestamp) {
         LocalDateTime dateTime = timestamp.toLocalDateTime();
         this.dateTime = dateTime;
@@ -69,6 +70,8 @@ public class Transaction {
     public Transaction() {
     }
 
-    public Long getId(){return id;}
+    public Long getId() {
+        return id;
+    }
 
 }

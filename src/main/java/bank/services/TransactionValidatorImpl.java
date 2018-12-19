@@ -1,7 +1,9 @@
 package bank.services;
 
+import bank.AppError;
 import bank.domain.Account;
 import bank.domain.User;
+import bank.domain.ValidationField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,61 +16,65 @@ public class TransactionValidatorImpl implements TransactionValidator {
     AccountServiceImpl accountService;
 
     @Override
-    public List<String> validateTransaction(Account accFrom, Account accTo, String amount, User user) {
-        List<String> errors = new ArrayList<>();
+    public List<AppError> validateTransaction(Account accFrom, Account accTo, String amount, User user) {
+        List<AppError> errors = new ArrayList<>();
 
         validateUser(user, errors);
 
         if (errors.isEmpty()) {
-            validateAccounts(accFrom, accTo, errors, user);
+            validateFromAccount(accFrom, errors, user);
+            validateToAccount(accTo, errors);
             validateAmount(accFrom, amount, errors);
         }
         return errors;
     }
 
     @Override
-    public void validateAmount(Account accFrom, String amount, List<String> errors) {
-        double amountDouble = 0.0d;
+    public void validateAmount(Account accFrom, String amount, List<AppError> errors) {
+        Double amountDouble = null;
+        amount = amount.replace(",", ".");
         try {
-            amountDouble  = Double.parseDouble(amount);
-        } catch (NumberFormatException e){
-            errors.add(amount+ " is not a number");
-        }
-
-
-        if (accFrom != null && accFrom.getBalance() < amountDouble) {
-            errors.add(accFrom.getNumber() + " has not enough money");
-        }
-
-        if (amountDouble < 0.01) {
-            errors.add("Amount cannot be negative or zero");
+            amountDouble = Double.parseDouble(amount);
+        } catch (NumberFormatException e) {
+            errors.add(new AppError(ValidationField.Amount, amount + " is not a number"));
+        } finally {
+            if (amountDouble != null) {
+                if (accFrom != null && accFrom.getBalance() < amountDouble) {
+                    errors.add(new AppError(ValidationField.Amount, accFrom.getNumber() + " has not enough money"));
+                }
+                if (amountDouble < 0.01) {
+                    errors.add(new AppError(ValidationField.Amount,"Amount cannot be negative or zero" ));
+                }
+            }
         }
     }
 
     @Override
-    public void validateAccounts(Account accFrom, Account accTo, List<String> errors, User user) {
+    public void validateFromAccount(Account accFrom, List<AppError> errors, User user) {
         if (accFrom == null) {
-            errors.add(accFrom + " account does not exist");
-        }
-        if (accTo == null) {
-            errors.add(accTo + " account does not exist");
-        }
-
-        if (accFrom != null) {
-            List<Account> userAccounts = accountService.getAvailabeAccounts(user);
+            errors.add(new AppError(ValidationField.FromAccount,"Account does not exist" ));
+        } else {
+            List<Account> userAccounts = getAvailabeAccounts(user);
             if (!userAccounts.contains(accFrom)) {
-                errors.add("Account does not belong to user");
-            }
-            if (accFrom.equals(accTo)) {
-                errors.add("Not possible to transfer money within same account");
+                errors.add(new AppError(ValidationField.FromAccount,"Account does not belong to user"));
             }
         }
-
     }
 
-    private void validateUser(User user, List<String> validationErrors) {
+    List<Account> getAvailabeAccounts(User user) {
+        return accountService.getAvailabeAccounts(user);
+    }
+
+    @Override
+    public void validateToAccount(Account accTo, List<AppError> errors) {
+        if (accTo == null) {
+            errors.add(new AppError(ValidationField.ToAccount,"Account does not exist"));
+        }
+    }
+
+    void validateUser(User user, List<AppError> errors) {
         if (user == null) {
-            validationErrors.add("username not found");
+            errors.add(new AppError(ValidationField.User,"user not found"));
         }
     }
 

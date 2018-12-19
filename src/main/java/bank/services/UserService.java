@@ -12,10 +12,11 @@ public class UserService {
     @Autowired
     UserRepository repository;
 
-    public User getUser(String username){
+    public User getUser(String username) {
         return repository.findByUsername(username);
     }
-    public User getUser(Long id){
+
+    public User getUser(Long id) {
         return repository.getOne(id);
     }
 

@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+>
 <head>
     <title>Transaction History</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
 </head>
 <body>
-<div class = "container">
+<div class="container">
 
     <div th:insert="navBar"></div>
 
-    <p type="text" class="text-right" th:text="'Logged in: '+${name}" ></p>
-<h2>
-    <span th:text="'Transaction list:'"></span>
-</h2>
+    <p type="text" class="text-right" th:text="'Logged in: '+${name}"></p>
+    <h2>
+        <span th:text="'Transaction list:'"></span>
+    </h2>
 
-<table th:object="${transactions}" id="transactionTable" border="1">
-    <tr>
-        <th>Transaction id</th>
-        <th>From account</th>
-        <th>To account</th>
-        <th>Date and time</th>
-        <th>Amount</th>
-    </tr>
-    <tr th:each="transaction :${transactions}">
-        <td  th:text="${transaction.getId()}"></td>
-        <td  th:text="${transaction.getFromAccount().getNumber()}"></td>
-        <td  th:text="${transaction.getToAccount().getNumber()}"></td>
-        <td  th:text="${transaction.getDateTime()}"></td>
-        <td  th:text="${#numbers.formatDecimal (transaction.getAmount(), 1,2, 'COMMA')}" ></td>
-    </tr>
-</table>
+    <table th:object="${transactions}" id="transactionTable" border="1">
+        <tr>
+            <th>Transaction id</th>
+            <th>From account</th>
+            <th>To account</th>
+            <th>Date and time</th>
+            <th>Amount</th>
+        </tr>
+        <tr th:each="transaction :${transactions}">
+            <td th:text="${transaction.getId()}"></td>
+            <td th:text="${transaction.getFromAccount().getNumber()}"></td>
+            <td th:text="${transaction.getToAccount().getNumber()}"></td>
+            <td th:text="${transaction.getDateTime()}"></td>
+            <td th:text="${#numbers.formatDecimal (transaction.getAmount(), 1,2, 'COMMA')}"></td>
+        </tr>
+    </table>
 
 
-    <div class = "container">
+    <div class="container">
         <form th:action="@{/logout}" method="post">
             <button type="submit" class="btn float-right">Sign out</button>
         </form>

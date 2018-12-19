@@ -3,28 +3,26 @@ package bank.domain;
 import javax.persistence.*;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
-    @Column(name="id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="first_name", nullable = false)
+    @Column(name = "first_name", nullable = false)
     private String firstName;
 
-    @Column(name="last_name", nullable = false)
+    @Column(name = "last_name", nullable = false)
     private String lastname;
 
-    @Column(name="username", nullable = false)
+    @Column(name = "username", nullable = false)
     private String username;
 
-    @Column(name="password", nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-
-
-    @Column(name="active", nullable = false )
+    @Column(name = "active", nullable = false)
     private boolean active;
 
     public Long getId() {
@@ -66,9 +64,10 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-   public void setActive(boolean active) {
-       this.active = active;
-   }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     public boolean isActive() {
         return active;

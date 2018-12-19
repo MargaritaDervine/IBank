@@ -1,7 +1,9 @@
 package bank.web;
 
+import bank.AppError;
 import bank.domain.Account;
 import bank.domain.User;
+import bank.domain.ValidationField;
 import bank.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,7 +27,7 @@ public class DoTransactionController {
     AccountServiceImpl accountService;
 
     @RequestMapping(value = "/doTransaction", method = RequestMethod.GET)
-    public String tr(Model model) {
+    public String transactions(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUser(auth.getName());
         List<Account> accounts = accountService.getAvailabeAccounts(user);
@@ -48,21 +50,37 @@ public class DoTransactionController {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUser(auth.getName());
+        model.addAttribute("name", user.getFirstName() + " " + user.getLastname());
         List errors;
+        String toAccError;
+        String amountError;
         if (toAcc.isEmpty() || amount.isEmpty()) {
             errors = Arrays.asList("all fields must be filled");
             model.addAttribute("errors", errors);
             return "doTransaction";
         }
 
-        DoTransactionResponse response = transactionService.doTransaction(new DoTransactionRequest(fromAcc, toAcc, amount, user.getId()));
+        DoTransactionResponse response = transactionService.doTransaction(new DoTransactionRequest(fromAcc, toAcc,
+                amount, user.getId()));
         if (response.isSuccess()) {
             model.addAttribute("success", true);
         } else {
-            errors = response.getErrors();
-            model.addAttribute("errors", errors);
+            toAccError = checkError(response, ValidationField.ToAccount);
+            model.addAttribute("toAccError", toAccError);
+
+            amountError = checkError(response, ValidationField.Amount);
+            model.addAttribute("amountError", amountError);
         }
         return "doTransaction";
+    }
+
+    private String checkError(DoTransactionResponse response, ValidationField field) {
+        for (AppError e : response.getErrors()) {
+            if (e.getField().equals(field)) {
+                return e.getDescription();
+            }
+        }
+        return null;
     }
 
 }

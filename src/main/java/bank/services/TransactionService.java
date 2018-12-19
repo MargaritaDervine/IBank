@@ -1,5 +1,6 @@
 package bank.services;
 
+import bank.AppError;
 import bank.database.TransactionRepository;
 import bank.domain.Account;
 import bank.domain.Transaction;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Service
 @Component
 public class TransactionService {
@@ -34,7 +36,7 @@ public class TransactionService {
         User user = userService.getUser(request.getUserId());
 
 
-        List<String> validationErrors = transactionValidator.validateTransaction(fromAcc, toAcc,
+        List<AppError> validationErrors = transactionValidator.validateTransaction(fromAcc, toAcc,
                 amount, user);
         if (!validationErrors.isEmpty()) {
             return new DoTransactionResponse(validationErrors);

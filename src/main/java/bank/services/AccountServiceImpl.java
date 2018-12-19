@@ -13,6 +13,7 @@ import java.util.List;
 @Service
 @Component
 public class AccountServiceImpl {
+
     @Autowired
     private AccountRepository repository;
 
@@ -25,7 +26,7 @@ public class AccountServiceImpl {
         Account account = getAccount(accountNumber);
         double newBalance = account.getBalance() + amt;
         account.setBalance(newBalance);
-        repository.save(account);
+        Account newAcc = repository.save(account);
     }
     public List<Account> getAvailabeAccounts(User user) {
         return repository.findByUser(user);

@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -28,13 +27,13 @@ public class TransactionHistoryController {
     UserService userService;
 
 
-    @RequestMapping(value ="/transactionHistory", method=RequestMethod.GET)
-    public String transactionHistory(Model model){
+    @RequestMapping(value = "/transactionHistory", method = RequestMethod.GET)
+    public String transactionHistory(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUser(auth.getName());
         Account acct = accountService.getAvailabeAccounts(user).get(0);
         model.addAttribute("name", user.getFirstName() + " " + user.getLastname());
-        List <Transaction> transactions = transactionService.getTransactionsByAccount(acct);
+        List<Transaction> transactions = transactionService.getTransactionsByAccount(acct);
         model.addAttribute("transactions", transactions);
         return "transactionHistory";
     }

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class UserPageController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(value ="/userpage", method = RequestMethod.GET)
+    @RequestMapping(value = "/userpage", method = RequestMethod.GET)
     public String accounts(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUser(auth.getName());

@@ -34,25 +34,39 @@
         </div>
 
         <div><label> Receiver account: <input type="text" name="toAccount"/> </label></div>
+        <div th:if="${toAccError!=null}">
+            <span style="color: #F00;" th:text="${toAccError}"></span>
+        </div>
         <div><label> Amount: <input type="text" name="amount"/> </label></div>
-
-        <div th:if="${errors!=null}">
-            <ul>
-                <li style="color: #F00; font-weight: bold" th:each="errorMsg : ${errors}" th:text="${errorMsg}"></li>
-            </ul>
-
+        <div th:if="${amountError!=null}">
+            <span style="color: #F00;" th:text="${amountError}"></span>
+        </div>
+        <div class="container">
+        <div th:if="${amountError!=null or toAccError!=null}">
             <form th:action="@{/doTransaction}" method="post">
                 <button type="submit" name="action" value="again" class="btn btn-secondary">Try again</button>
             </form>
             <br>
         </div>
-
-        <span style="font-weight: bold" th:if="${success}" th:text="'Transaction successfully saved'"></span>
-
-        <div>
+        </div>
+        <div th:if="${success}">
+            <span style="font-weight: bold" th:text="'Transaction successfully saved'"></span>
+            <div class="container">
+                <form th:action="@{/doTransaction}" method="post">
+                    <button type="submit" name="action" value="again" class="btn btn-secondary">New Transaction</button>
+                </form>
+            </div>
+            <div class="container">
+            <div th:if="${errors!=null}">
+                <form th:action="@{/doTransaction}" method="post">
+                    <button type="submit" name="action" value="again" class="btn btn-secondary">New Transaction</button>
+                </form>
+            </div>
+            </div>
+        </div>
+        <div class="container mt-3">
             <button type="submit" name="action" class="btn btn-primary">Submit</button>
         </div>
-
     </form>
 
     <div class="container">

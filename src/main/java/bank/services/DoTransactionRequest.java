@@ -10,13 +10,15 @@ public class DoTransactionRequest {
     public String getUsername() {
         return username;
     }
-    public Long getUserId(){return userId;}
+
+    public Long getUserId() {
+        return userId;
+    }
 
     public DoTransactionRequest(String accFrom, String accTo, String amt, Long userId) {
         this.accFrom = accFrom;
         this.accTo = accTo;
         this.amt = amt;
-        //this.username = username;
         this.userId = userId;
     }
 

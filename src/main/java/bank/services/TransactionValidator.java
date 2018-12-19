@@ -1,14 +1,17 @@
 package bank.services;
 
+import bank.AppError;
 import bank.domain.Account;
 import bank.domain.User;
 
 import java.util.List;
 
 public interface TransactionValidator {
-    List<String> validateTransaction(Account accFrom, Account accTo, String amount,User user);
+    List<AppError> validateTransaction(Account accFrom, Account accTo, String amount, User user);
 
-    void validateAmount(Account accFrom, String amount, List<String> errors);
+    void validateAmount(Account accFrom, String amount, List<AppError> errors);
 
-    void validateAccounts(Account accFrom, Account accTo, List<String> errors, User user);
+    void validateFromAccount(Account accFrom, List<AppError> errors, User user);
+
+    void validateToAccount(Account accTo, List<AppError> errors);
 }
