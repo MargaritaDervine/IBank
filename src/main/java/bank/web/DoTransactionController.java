@@ -51,12 +51,12 @@ public class DoTransactionController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.getUser(auth.getName());
         model.addAttribute("name", user.getFirstName() + " " + user.getLastname());
-        List errors;
+        String error;
         String toAccError;
         String amountError;
         if (toAcc.isEmpty() || amount.isEmpty()) {
-            errors = Arrays.asList("all fields must be filled");
-            model.addAttribute("errors", errors);
+            error = "all fields must be filled";
+            model.addAttribute("error", error);
             return "doTransaction";
         }
 
@@ -74,7 +74,7 @@ public class DoTransactionController {
         return "doTransaction";
     }
 
-    private String checkError(DoTransactionResponse response, ValidationField field) {
+    String checkError(DoTransactionResponse response, ValidationField field) {
         for (AppError e : response.getErrors()) {
             if (e.getField().equals(field)) {
                 return e.getDescription();

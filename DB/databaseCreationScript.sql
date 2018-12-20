@@ -15,12 +15,13 @@ CREATE TABLE IF NOT EXISTS `Users` (
   `last_name` VARCHAR(32) NOT NULL,
   `username` VARCHAR(32) NOT NULL,
   `password` VARCHAR(32) NOT NULL,
+   `active` BOOLEAN NOT NULL DEFAULT true,
   PRIMARY KEY (`id`)
-)
+);
 CREATE TABLE IF NOT EXISTS `Accounts` (
-  `account_number` VARCHAR(10) NOT NULL,
+  `account_number` VARCHAR(10) NOT NULL UNIQUE,
   `currency` VARCHAR(3) NOT NULL,
-  `balance` DEC NOT NULL ,
+  `balance` DOUBLE PRECISION NOT NULL ,
   `user_id` BIGINT NOT NULL,
   PRIMARY KEY (`account_number`),
   FOREIGN KEY (user_id) REFERENCES Users(id)
@@ -29,8 +30,8 @@ CREATE TABLE IF NOT EXISTS `Transactions` (
   `transaction_id` BIGINT NOT NULL AUTO_INCREMENT,
   `from_account_number` VARCHAR(10) NOT NULL,
   `to_account_number` VARCHAR(10) NOT NULL ,
-  `dateTime` DATETIME NOT NULL,
-  `amount` DEC NOT NULL,
+  `date_time` timestamp NOT NULL,
+  `amount` DOUBLE PRECISION NOT NULL,
   PRIMARY KEY (`transaction_id`),
   FOREIGN KEY (from_account_number) REFERENCES Accounts(account_number),
   FOREIGN KEY (to_account_number) REFERENCES Accounts(account_number)
